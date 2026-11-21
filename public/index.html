@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LifeAHead: be born at random, answer in your own words</title>
+<meta name="description" content="A life simulation. You are born at random, weighted by where babies are really born, and live one life a year at a time. Answer every question in your own words: an AI referee plays out the consequences.">
+<meta name="theme-color" content="#1C2B6E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231C2B6E'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='700' font-size='18' text-anchor='middle' fill='%23EEC75C'%3EB-0%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <a class="brand" href="./" id="brand">LifeAHead</a>
+  <span class="office">Office of Existence Allocation</span>
+  <span class="ai-status" id="aiStatus" role="status"></span>
+</header>
+
+<main id="main">
+
+  <!-- Counter: apply for a birth -->
+  <section id="home" class="screen">
+    <div class="sheet sheet-hero">
+      <div class="ticket" aria-hidden="true">
+        <span>Now serving</span>
+        <b id="ticketNo">0 000 000 000</b>
+      </div>
+      <p class="formno">Form B-0</p>
+      <h1>Application for birth</h1>
+      <p class="lede">About four babies are born every second. You are about to be one of them. The Office assigns your country, your parents and your means the way the world really does, then you live that life one year at a time and answer for it in your own words.</p>
+
+      <dl class="fields">
+        <div class="field"><dt>Place of birth</dt><dd>drawn by lot, weighted by real births</dd></div>
+        <div class="field"><dt>Parents and income</dt><dd>assigned, non-negotiable</dd></div>
+        <div class="field"><dt>Complaints</dt><dd>none accepted</dd></div>
+        <div class="field">
+          <dt><label for="realCountry">Where you were actually born</label></dt>
+          <dd>
+            <select id="realCountry">
+              <option value="">optional, for comparison at the end</option>
+            </select>
+          </dd>
+        </div>
+      </dl>
+
+      <button class="btn btn-primary btn-big" id="bornBtn" type="button">Be born</button>
+    </div>
+
+    <div class="sheet">
+      <h2>Your odds at the counter</h2>
+      <p class="sheet-intro">Out of every 100 babies born this year, this is roughly where they land.</p>
+      <ol class="odds" id="odds"></ol>
+      <p class="note" id="oddsNote"></p>
+    </div>
+
+    <div class="sheet" id="pastSheet" hidden>
+      <h2>Closed files</h2>
+      <p class="sheet-intro">Lives you have already lived on this device.</p>
+      <ul class="past" id="past"></ul>
+      <button class="btn btn-quiet" id="clearPast" type="button">Delete all closed files</button>
+    </div>
+
+    <div class="sheet">
+      <h2>How the Office works</h2>
+      <div class="how">
+        <div>
+          <h3>The draw</h3>
+          <p>Your country is drawn in proportion to the number of babies born there each year. Your family's income is drawn from that country's real inequality. Nobody gets to choose, which is the point.</p>
+        </div>
+        <div>
+          <h3>The years</h3>
+          <p>Each year something happens, and every so often the Office puts a question to you about school, work, love, health or leaving. Pick a yearly focus, or switch on auto and watch.</p>
+        </div>
+        <div>
+          <h3>Your own words</h3>
+          <p>Every question accepts a written answer. An AI referee reads what you say you do, decides what is plausible for this person in this place, and files consequences that can come back years later.</p>
+        </div>
+        <div>
+          <h3>The statistics</h3>
+          <p>How long you live follows the life expectancy and child mortality of where you are. Choices bend a life; it is hard to fully escape the place you were issued.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assignment: the draw -->
+  <section id="birth" class="screen" hidden>
+    <div class="sheet sheet-narrow">
+      <p class="formno">Form B-1</p>
+      <h1 class="h-mid">Notice of assignment</h1>
+      <div class="reel" id="reel" aria-live="polite"></div>
+      <div id="assignment" hidden>
+        <dl class="fields" id="birthFields"></dl>
+        <p class="stamp-line"><span class="stamp" id="assignStamp">Assigned</span></p>
+        <h2 class="h-small">Born the same second</h2>
+        <p class="sheet-intro">Four other babies arrived with you. Their lives run alongside yours on statistics alone.</p>
+        <ul class="cohort" id="birthCohort"></ul>
+        <button class="btn btn-primary btn-big" id="startBtn" type="button">Start this life</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- The life itself -->
+  <section id="life" class="screen" hidden>
+    <div class="life-grid">
+      <aside class="sheet dossier" aria-label="Your file">
+        <p class="formno" id="fileNo">File</p>
+        <p class="who"><span class="who-flag" id="whoFlag"></span> <span id="whoName"></span></p>
+        <p class="age"><b id="ageNum">0</b> <span>years old</span></p>
+        <dl class="fields fields-tight" id="lifeFields"></dl>
+        <div class="gauges" id="gauges"></div>
+        <fieldset class="focus" id="focusBox">
+          <legend>This year's focus</legend>
+          <div class="focus-opts" id="focusOpts"></div>
+        </fieldset>
+        <details class="peers">
+          <summary>Born the same second</summary>
+          <ul class="cohort" id="lifeCohort"></ul>
+        </details>
+      </aside>
+
+      <div class="sheet register">
+        <div id="questionSlot" aria-live="polite"></div>
+        <h2 class="h-small">Register</h2>
+        <ol class="log" id="log" reversed></ol>
+      </div>
+    </div>
+
+    <div class="controls" id="controls">
+      <button class="btn btn-primary" id="nextBtn" type="button">Next year</button>
+      <button class="btn" id="autoBtn" type="button" aria-pressed="false">Auto</button>
+      <button class="btn" id="speedBtn" type="button" aria-label="Auto speed">Speed: normal</button>
+      <span class="hint" id="hint">Space also advances a year</span>
+    </div>
+  </section>
+
+  <!-- Case closed -->
+  <section id="end" class="screen" hidden>
+    <div class="sheet sheet-narrow">
+      <p class="formno">Form D-9</p>
+      <h1 class="h-mid">Record of a life</h1>
+      <p class="stamp-line stamp-right"><span class="stamp" id="verdictStamp"></span></p>
+      <p class="epitaph" id="epitaph"></p>
+      <dl class="fields" id="endFields"></dl>
+
+      <div id="badgesBox" hidden>
+        <h2 class="h-small">Commendations</h2>
+        <ul class="badges" id="badges"></ul>
+      </div>
+
+      <h2 class="h-small">Born the same second</h2>
+      <ul class="cohort" id="endCohort"></ul>
+
+      <div id="compareBox" hidden>
+        <h2 class="h-small">Against your real birthplace</h2>
+        <p class="compare" id="compare"></p>
+      </div>
+
+      <div class="end-actions">
+        <button class="btn btn-primary" id="againBtn" type="button">Be born again</button>
+        <button class="btn" id="copyBtn" type="button">Copy summary</button>
+        <button class="btn btn-quiet" id="homeBtn" type="button">Back to the counter</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Figures are rounded orders of magnitude after UN, World Bank and UNDP publications, covering 84 countries where about nine in ten babies are born. A simulated life says nothing about a real person, fate or future.</p>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/content.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

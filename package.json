@@ -1,0 +1,17 @@
+{
+  "name": "lifeahead",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A birth-lottery life simulation where an AI referee plays out your free-text answers.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
+    "zod": "^4.6.7"
+  }
+}
